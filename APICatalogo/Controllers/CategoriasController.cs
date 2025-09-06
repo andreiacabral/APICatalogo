@@ -37,7 +37,7 @@ namespace APICatalogo.Controllers
         {
             try
             {
-                var categoria = _context.Categorias.FirstOrDefault(p => p.CatogoriaId == id);
+                var categoria = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
                 if (categoria == null)
                 {
                     return NotFound($"Categoria não encontrada...");
@@ -61,35 +61,35 @@ namespace APICatalogo.Controllers
             _context.SaveChanges();
 
             return new CreatedAtRouteResult("ObterCategoria",
-                new { id = categoria.CatogoriaId }, categoria);
+                new { id = categoria.CategoriaId }, categoria);
         }
 
-        [HttpPut("{id:int}")]
-        public ActionResult Put(int id, Categoria categoria)
-        {
-            if (id != categoria.ProdutoId)
-            {
-                return BadRequest();
-            }
-            _context.Entry(categoria).State = EntityState.Modified;
-            _context.SaveChanges();
+        //[HttpPut("{id:int}")]
+        //public ActionResult Put(int id, Categoria categoria)
+        //{
+        //    if (id != categoria.ProdutoId)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    _context.Entry(categoria).State = EntityState.Modified;
+        //    _context.SaveChanges();
 
-            return Ok(categoria);
-        }
+        //    return Ok(categoria);
+        //}
 
-        [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
-        {
-            var categoria = _context.Categorias.FirstOrDefault(p => p.CatogoriaId == id);
+        //[HttpDelete("{id:int}")]
+        //public ActionResult Delete(int id)
+        //{
+        //    var categoria = _context.Categorias.FirstOrDefault(p => p.CatogoriaId == id);
 
-            if (categoria is null)
-            {
-                return NotFound("Categoria não localizado...");
-            }
-            _context.Categorias.Remove(categoria);
-            _context.SaveChanges();
+        //    if (categoria is null)
+        //    {
+        //        return NotFound("Categoria não localizado...");
+        //    }
+        //    _context.Categorias.Remove(categoria);
+        //    _context.SaveChanges();
 
-            return Ok(categoria);
-        }
+        //    return Ok(categoria);
+        //}
     }
 }
