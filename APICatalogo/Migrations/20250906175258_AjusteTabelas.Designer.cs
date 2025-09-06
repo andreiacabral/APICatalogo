@@ -12,22 +12,22 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APICatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230310203817_PopulaBanco")]
-    partial class PopulaBanco
+    [Migration("20250906175258_AjusteTabelas")]
+    partial class AjusteTabelas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("APICatalogo.Models.Categorias", b =>
+            modelBuilder.Entity("APICatalogo.Models.Categoria", b =>
                 {
-                    b.Property<int>("CatogoriaId")
+                    b.Property<int>("CategoriaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -36,14 +36,14 @@ namespace APICatalogo.Migrations
                     b.Property<string>("ImagemUrl")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("varchar(80)");
 
-                    b.HasKey("CatogoriaId");
+                    b.HasKey("CategoriaId");
 
                     b.ToTable("Categorias");
                 });
@@ -56,29 +56,29 @@ namespace APICatalogo.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ProdutoId"));
 
-                    b.Property<int?>("CategoriaId")
+                    b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<float>("Estoque")
-                        .HasColumnType("real");
+                        .HasColumnType("float");
 
                     b.Property<string>("ImagemUrl")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("varchar(80)");
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(10,2)");
@@ -92,14 +92,16 @@ namespace APICatalogo.Migrations
 
             modelBuilder.Entity("APICatalogo.Models.Produto", b =>
                 {
-                    b.HasOne("APICatalogo.Models.Categorias", "Categoria")
+                    b.HasOne("APICatalogo.Models.Categoria", "Categoria")
                         .WithMany("Produtos")
-                        .HasForeignKey("CategoriaId");
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("APICatalogo.Models.Categorias", b =>
+            modelBuilder.Entity("APICatalogo.Models.Categoria", b =>
                 {
                     b.Navigation("Produtos");
                 });
