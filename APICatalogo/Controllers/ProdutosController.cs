@@ -10,7 +10,7 @@ using APICatalogo.Models;
 
 namespace APICatalogo.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]")]//produtos
     [ApiController]
     public class ProdutosController : ControllerBase
     {
@@ -21,17 +21,33 @@ namespace APICatalogo.Controllers
             _context = context;
         }
 
+
+        // /produtos/primeiro
+        [HttpGet("primeiro")] 
+        public ActionResult<Produto> GetPrimreiro()
+        {
+            var produto = _context.Produtos.FirstOrDefault();
+
+            if (produto is null)
+                return NotFound("Produtos não encontrados...");
+
+            return Ok(produto);
+        }
+
+        // /produtos
         [HttpGet]
-        public ActionResult<IEnumerable<Produto>>Get()
+        public ActionResult<IEnumerable<Produto>> Get()
         {
             var produtos = _context.Produtos.ToList();
 
-            if(produtos is null)
-                return NotFound("Produtos não encontrados..."); 
-            
+            if (produtos is null)
+                return NotFound("Produtos não encontrados...");
+
             return Ok(produtos);
         }
 
+
+        // /produtos/id
         [HttpGet("{id:int}",Name="ObterProduto")]
         public  ActionResult<Produto> Get(int id )
         {
@@ -43,6 +59,7 @@ namespace APICatalogo.Controllers
             return produto;
         }
 
+        // /produtos
         [HttpPost]
         public ActionResult Post(Produto produto)
         {
