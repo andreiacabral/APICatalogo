@@ -16,13 +16,19 @@ namespace APICatalogo.Controllers
             _context = context;
         }
 
+        [HttpGet("produtos")] 
+        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutos()
+        {
+            return _context.Categorias.Include(p=> p.Produtos).ToList();
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> Get()
         {
             try
             {
-                throw new DataMisalignedException();
-                //return _context.Categorias.AsNoTracking().ToList();
+                //throw new DataMisalignedException();
+                return _context.Categorias.AsNoTracking().ToList();
             }
             catch (Exception)
             {
@@ -64,32 +70,32 @@ namespace APICatalogo.Controllers
                 new { id = categoria.CategoriaId }, categoria);
         }
 
-        //[HttpPut("{id:int}")]
-        //public ActionResult Put(int id, Categoria categoria)
-        //{
-        //    if (id != categoria.ProdutoId)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    _context.Entry(categoria).State = EntityState.Modified;
-        //    _context.SaveChanges();
+        [HttpPut("{id:int}")]
+        public ActionResult Put(int id, Categoria categoria)
+        {
+            if (id != categoria.CategoriaId)
+            {
+                return BadRequest();
+            }
+            _context.Entry(categoria).State = EntityState.Modified;
+            _context.SaveChanges();
 
-        //    return Ok(categoria);
-        //}
+            return Ok(categoria);
+        }
 
-        //[HttpDelete("{id:int}")]
-        //public ActionResult Delete(int id)
-        //{
-        //    var categoria = _context.Categorias.FirstOrDefault(p => p.CatogoriaId == id);
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
+        {
+            var categoria = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
 
-        //    if (categoria is null)
-        //    {
-        //        return NotFound("Categoria não localizado...");
-        //    }
-        //    _context.Categorias.Remove(categoria);
-        //    _context.SaveChanges();
+            if (categoria is null)
+            {
+                return NotFound("Categoria não localizado...");
+            }
+            _context.Categorias.Remove(categoria);
+            _context.SaveChanges();
 
-        //    return Ok(categoria);
-        //}
+            return Ok(categoria);
+        }
     }
 }
